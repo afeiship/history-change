@@ -4,6 +4,7 @@ ROOT_PATH=$(dirname $BASH_SOURCE);
 
 ## basic alias:
 alias bi='bower install';
+alias bir='bower install --allow-root';
 alias bi-s='bower install --save';
 alias bi-d='bower install --save-dev';
 
