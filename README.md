@@ -11,7 +11,21 @@
 npm install @jswork/history-change
 ```
 
-## usage
+## use in app
+```js
+import HistoryChange from '@jswork/history-change';
+
+// app init
+HistoryChange.init('hash');
+
+// listen
+window.addEventListener('historychange', (e) => {
+  const { action, payload } = e.detail;
+  console.log('action/history :', action, payload.history);
+});
+```
+
+## usage in browser
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -28,7 +42,7 @@ npm install @jswork/history-change
       <a href="#3">333</a>
       <a href="#4">444</a>
     </nav>
-    <script type="module">
+    <script>
       HistoryChange.init('hash');
 
       window.addEventListener('historychange', (e) => {
