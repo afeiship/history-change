@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Detect history/url change.",
   "main": "dist/index.js",
-  "module": "dist/index.esm.js",
   "typings": "dist/index.d.ts",
   "scripts": {
     "build": "gulp",
