@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <nav>
+      <a href="#1">111</a>
+      <a href="#2">222</a>
+      <a href="#3">333</a>
+      <a href="#4">444</a>
+    </nav>
+    <script type="module">
+      import HistoryChange from '/dist/index.esm.js';
+      HistoryChange.init('hash');
+
+      window.addEventListener('historychange', (e) => {
+        console.log(e.detail);
+      });
+    </script>
+  </body>
+</html>

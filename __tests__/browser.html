@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document-browser</title>
+  </head>
+  <body>
+    <nav>
+      <a href="/1">111</a>
+      <a href="/2">222</a>
+      <a href="/3">333</a>
+      <a href="/4">444</a>
+    </nav>
+
+    <p><button id="btn1">ReplaceState#9</button> <button id="btn2">ReplaceState#29</button></p>
+    <script>
+      // bind event for nav
+      const nav = document.querySelector('nav');
+      const btn1 = document.querySelector('#btn1');
+      const btn2 = document.querySelector('#btn2');
+      nav.addEventListener('click', function (event) {
+        event.preventDefault();
+        const { target } = event;
+        if (target.tagName === 'A') {
+          const { href } = target;
+          history.pushState(null, null, href);
+          window.dispatchEvent(new Event('popstate'));
+        }
+      });
+
+      // bind event for btn1
+      btn1.addEventListener('click', function (event) {
+        event.preventDefault();
+        history.replaceState(null, null, '/9');
+        window.dispatchEvent(new Event('popstate'));
+      });
+
+      // bind event for btn2
+      btn2.addEventListener('click', function (event) {
+        event.preventDefault();
+        history.replaceState(null, null, '/29');
+        window.dispatchEvent(new Event('popstate'));
+      });
+
+      const detectBackOrForward = function (onChange) {
+        hashHistory = [window.location.pathname];
+        historyLength = window.history.length;
+
+        let oldURL = window.location.href;
+
+        return function (event) {
+          var hash = window.location.pathname,
+            length = window.history.length;
+          const newURL = window.location.href;
+          const isBackOrReplace = historyLength == length;
+          if (hashHistory.length && isBackOrReplace) {
+            if (hashHistory[hashHistory.length - 2] == hash) {
+              hashHistory = hashHistory.slice(0, -1);
+              onChange({ action: 'back', hashHistory, oldURL, newURL });
+            } else {
+              // hashHistory.push(hash);
+              hashHistory[hashHistory.length - 1] = hash;
+              onChange({ action: 'replace', hashHistory, oldURL, newURL });
+            }
+          } else {
+            hashHistory.push(hash);
+            historyLength = length;
+            onChange({ action: 'forward', hashHistory, oldURL, newURL });
+          }
+
+          oldURL = newURL;
+        };
+      };
+
+      window.addEventListener(
+        'popstate',
+        detectBackOrForward(({ action, hashHistory, oldURL, newURL }) => {
+          const cusEvent = new CustomEvent('historyChange', {
+            detail: {
+              action,
+              payload: {
+                hash: hashHistory[hashHistory.length - 1],
+                history: hashHistory,
+                oldURL,
+                newURL
+              }
+            }
+          });
+
+          window.dispatchEvent(cusEvent);
+        })
+      );
+
+      // test historyChange
+      window.addEventListener('historyChange', (e) => {
+        console.log('historyChange:', e.detail);
+      });
+    </script>
+  </body>
+</html>

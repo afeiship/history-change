@@ -21,15 +21,18 @@
         historyLength = window.history.length;
 
         return function (event) {
+          console.log('len before/after: ', historyLength, window.history.length);
           var hash = window.location.hash,
             length = window.history.length;
-          if (hashHistory.length && historyLength == length) {
+          const isBackOrReplace = historyLength == length;
+          if (hashHistory.length && isBackOrReplace) {
             if (hashHistory[hashHistory.length - 2] == hash) {
               hashHistory = hashHistory.slice(0, -1);
               onChange({ action: 'back', payload: hashHistory, event });
             } else {
-              hashHistory.push(hash);
-              onChange({ action: 'forward', payload: hashHistory, event });
+              // hashHistory.push(hash);
+              hashHistory[hashHistory.length - 1] = hash;
+              onChange({ action: 'replace', payload: hashHistory, event });
             }
           } else {
             hashHistory.push(hash);
