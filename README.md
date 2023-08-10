@@ -46,8 +46,8 @@ window.addEventListener('historychange', (e) => {
       HistoryChange.init('hash');
 
       window.addEventListener('historychange', (e) => {
-        const { action, payload } = e.detail;
-        console.log('action/history :', action, payload.history);
+        const { action, history } = e.detail;
+        console.log('action/history :', action, history);
       });
     </script>
   </body>

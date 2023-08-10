@@ -53,18 +53,16 @@ declare var define: any;
     init() {
       window.addEventListener(
         this.eventName,
-        this.detectBackOrForward(({ action, theHistory, newURL, oldURL }) => {
-          const route = theHistory[theHistory.length - 1];
+        this.detectBackOrForward(({ action, items, newURL, oldURL }) => {
+          const route = items[items.length - 1];
           const data = {
             detail: {
               action,
               routerType: this.routerType,
-              payload: {
-                newURL,
-                oldURL,
-                route,
-                history: theHistory,
-              },
+              newURL,
+              oldURL,
+              route,
+              history: items,
             },
           };
 
@@ -80,7 +78,7 @@ declare var define: any;
     detectBackOrForward(onChange) {
       const cache = sessionStorage.getItem(this.storeKey);
       const route = HOOKS[this.routerType].route();
-      let theHistory = cache ? JSON.parse(cache) : [route];
+      let items = cache ? JSON.parse(cache) : [route];
       let historyLength = window.history.length;
       let oldURL = window.location.href;
 
@@ -90,24 +88,24 @@ declare var define: any;
         const isBackOrReplace = historyLength == length;
         const newURL = window.location.href;
 
-        if (theHistory.length && isBackOrReplace) {
-          if (theHistory[theHistory.length - 2] == route) {
-            theHistory = theHistory.slice(0, -1);
-            onChange({ action: 'back', theHistory, oldURL, newURL });
+        if (items.length && isBackOrReplace) {
+          if (items[items.length - 2] == route) {
+            items = items.slice(0, -1);
+            onChange({ action: 'back', items, oldURL, newURL });
           } else {
-            // theHistory.push(route);
-            theHistory[theHistory.length - 1] = route;
-            onChange({ action: 'replace', theHistory, oldURL, newURL });
+            // items.push(route);
+            items[items.length - 1] = route;
+            onChange({ action: 'replace', items, oldURL, newURL });
           }
         } else {
-          theHistory.push(route);
+          items.push(route);
           historyLength = length;
-          onChange({ action: 'forward', theHistory, oldURL, newURL });
+          onChange({ action: 'forward', items, oldURL, newURL });
         }
 
         // sync actions:
         oldURL = newURL;
-        this.syncHistory(theHistory);
+        this.syncHistory(items);
       };
     }
 
