@@ -12,10 +12,32 @@ npm install @jswork/history-change
 ```
 
 ## usage
-```js
-import historyChange from '@jswork/history-change';
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HistoryChange online version</title>
+    <script src="https://unpkg.com/@jswork/history-change"></script>
+  </head>
+  <body>
+    <nav>
+      <a href="#1">111</a>
+      <a href="#2">222</a>
+      <a href="#3">333</a>
+      <a href="#4">444</a>
+    </nav>
+    <script type="module">
+      HistoryChange.init('hash');
 
-// usage goes here.
+      window.addEventListener('historychange', (e) => {
+        const { action, payload } = e.detail;
+        console.log('action/history :', action, payload.history);
+      });
+    </script>
+  </body>
+</html>
 ```
 
 ## license
