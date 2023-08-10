@@ -1,6 +1,6 @@
 {
   "name": "@jswork/history-change",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Detect history/url change.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -50,5 +50,15 @@
       ],
       "@babel/preset-typescript"
     ]
-  }
+  },
+  "keywords": [
+    "browser",
+    "change",
+    "detect",
+    "hash",
+    "history",
+    "route",
+    "router",
+    "url"
+  ]
 }
