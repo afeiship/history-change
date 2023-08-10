@@ -1,7 +1,9 @@
+import hash from './lib/hash';
+
 declare var wx: any;
 
-const HistoryChange = (): void => {
-  console.log('hello');
+const HistoryChange = {
+  hash,
 };
 
 // for commonjs es5 require

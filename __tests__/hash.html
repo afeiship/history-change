@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <nav>
+      <a href="#1">111</a>
+      <a href="#2">222</a>
+      <a href="#3">333</a>
+      <a href="#4">444</a>
+    </nav>
+    <script>
+      const storeKey = `${location.host}@history`;
+      const syncHistory = (his) => sessionStorage.setItem(storeKey, JSON.stringify(his));
+
+      var detectBackOrForward = function (onChange) {
+        hashHistory = JSON.parse(sessionStorage.getItem(storeKey)) || [window.location.hash];
+        historyLength = window.history.length;
+
+        return function (event) {
+          var hash = window.location.hash,
+            length = window.history.length;
+          if (hashHistory.length && historyLength == length) {
+            if (hashHistory[hashHistory.length - 2] == hash) {
+              hashHistory = hashHistory.slice(0, -1);
+              onChange({ action: 'back', payload: hashHistory, event });
+            } else {
+              hashHistory.push(hash);
+              onChange({ action: 'forward', payload: hashHistory, event });
+            }
+          } else {
+            hashHistory.push(hash);
+            historyLength = length;
+            onChange({ action: 'forward', payload: hashHistory, event });
+          }
+
+          syncHistory(hashHistory);
+        };
+      };
+
+      window.addEventListener(
+        'hashchange',
+        detectBackOrForward(({ action, payload, event }) => {
+          const { newURL, oldURL } = event;
+          // console.log('action/paylyad:', action, payload);
+          const evt = new CustomEvent('historyChange', {
+            detail: {
+              action,
+              payload: {
+                newURL,
+                oldURL,
+                hash: payload[payload.length - 1],
+                history: payload,
+              },
+            },
+          });
+          window.dispatchEvent(evt);
+        })
+      );
+
+      // test historyChange
+      // hash2change
+      // state2change
+      // historyChange
+      window.addEventListener('historyChange', (e) => {
+        console.log('historyChange:', e.detail);
+      });
+    </script>
+  </body>
+</html>
