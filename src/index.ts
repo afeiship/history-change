@@ -1,6 +1,8 @@
 // @thanks to: https://gist.github.com/sstephenson/739659
 // https://support.mozilla.org/de/questions/1365380
 // https://stackoverflow.com/questions/37270625/how-can-i-get-the-url-of-the-previous-page-when-triggering-the-popstate-event
+declare var wx: any;
+
 const HOOKS = {
   hash: {
     event: 'hashchange',
@@ -99,3 +101,11 @@ class HistoryChange {
     sessionStorage.setItem(this.storeKey, JSON.stringify(list));
   }
 }
+
+// ---- UMD DELETE ME ----
+// for commonjs es5 require
+if (typeof module !== 'undefined' && module.exports && typeof wx === 'undefined') {
+  module.exports = HistoryChange;
+}
+
+export default HistoryChange;
