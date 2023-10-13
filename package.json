@@ -1,6 +1,6 @@
 {
   "name": "@jswork/history-change",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Detect history/url change.",
   "main": "dist/index.js",
   "browser": "dist/index.umd.js",
